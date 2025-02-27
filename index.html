@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Species Card Deck</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        .deck {
+            position: relative;
+            width: 300px;
+            height: 450px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.5s;
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            background-color: #008cba;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Species Card Deck</h1>
+    <div class="deck" id="deck"></div>
+    <div class="controls">
+        <button onclick="prevCard()">Previous</button>
+        <button onclick="nextCard()">Next</button>
+    </div>
+
+    <script>
+        const imageRepo = "https://raw.githubusercontent.com/boobalootoo/CARDDECKDONOTEDIT/main/";
+        const speciesCards = [
+            "Alpine Newt.png", "American mink.png", "Balearic Shearwater.png", "Banded Demoiselle.png", "Barn Owl.png",
+            "Bearded Tit.png", "Beautiful Demoiselle.png", "Betony.png", "Bird’s-foot Trefoil.png", "Black Guillemot.png"
+            // Add all species images here
+        ];
+
+        let currentIndex = 0;
+        const deck = document.getElementById("deck");
+
+        function loadCards() {
+            speciesCards.forEach((image, index) => {
+                let card = document.createElement("div");
+                card.className = "card";
+                card.style.backgroundImage = `url(${imageRepo}${encodeURIComponent(image)})`;
+                card.style.transform = `translateX(${index * 100}%)`;
+                deck.appendChild(card);
+            });
+        }
+
+        function updateDeck() {
+            const cards = document.querySelectorAll(".card");
+            cards.forEach((card, index) => {
+                card.style.transform = `translateX(${(index - currentIndex) * 100}%)`;
+            });
+        }
+
+        function prevCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateDeck();
+            }
+        }
+
+        function nextCard() {
+            if (currentIndex < speciesCards.length - 1) {
+                currentIndex++;
+                updateDeck();
+            }
+        }
+
+        loadCards();
+    </script>
+</body>
+</html>
