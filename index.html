@@ -55,16 +55,24 @@
 
     <script>
         const imageRepo = "https://raw.githubusercontent.com/boobalootoo/CARDDECKDONOTEDIT/main/";
-        const speciesCards = [
-            "Alpine Newt.png", "American mink.png", "Balearic Shearwater.png", "Banded Demoiselle.png", "Barn Owl.png",
-            "Bearded Tit.png", "Beautiful Demoiselle.png", "Betony.png", "Bird’s-foot Trefoil.png", "Black Guillemot.png"
-            // Add all species images here
-        ];
+        let speciesCards = [];
+
+        async function fetchImageList() {
+            try {
+                const response = await fetch("https://api.github.com/repos/boobalootoo/CARDDECKDONOTEDIT/contents/");
+                const files = await response.json();
+                speciesCards = files.filter(file => file.name.endsWith(".png")).map(file => file.name);
+                loadCards();
+            } catch (error) {
+                console.error("Failed to fetch image list:", error);
+            }
+        }
 
         let currentIndex = 0;
         const deck = document.getElementById("deck");
 
         function loadCards() {
+            deck.innerHTML = "";
             speciesCards.forEach((image, index) => {
                 let card = document.createElement("div");
                 card.className = "card";
@@ -95,7 +103,7 @@
             }
         }
 
-        loadCards();
+        fetchImageList();
     </script>
 </body>
 </html>
